@@ -5,7 +5,7 @@ import { getLinkByShortCode, loadLinks, saveLinks } from "../services/shortener.
 export const getShortenerPage = async (req, res) => {
   try {
     const links = await loadLinks();
-    console.log(links)
+    // console.log(links)
     return res.render("index", { links, host: req.host });
   } catch (error) {
     console.error(error);
