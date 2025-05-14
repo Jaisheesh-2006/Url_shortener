@@ -12,8 +12,12 @@
         <li><a href="/">Home</a></li>
         <li><a href="#section2">About</a></li>
         <li><a href="#section4">Contact</a></li>
+        <% if(!user) { %>
         <li><a href="/user/login">Login</a></li>
         <li><a href="/user/register">Registration</a></li>
+        <% }else { %>
+        <li><a href="/user/logout">Logout</a></li>
+        <% } %>
       </ul>
     </nav>
   </body>
