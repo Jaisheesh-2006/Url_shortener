@@ -15,7 +15,7 @@ export const verifyAuthentication=(req,res,next)=>{
     }
     catch(e){
         req.user=null
-        return next()
+        
     }
     return next()
 }
