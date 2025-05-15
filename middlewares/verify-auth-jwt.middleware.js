@@ -11,7 +11,7 @@ export const verifyAuthentication=(req,res,next)=>{
     const decodedToken=verifyJWT(token);
     try{
         req.user=decodedToken
-        console.log(`req.user ${ JSON.stringify(req.user, null, 2)}`)
+        // console.log(`req.user ${ JSON.stringify(req.user, null, 2)}`)
     }
     catch(e){
         req.user=null

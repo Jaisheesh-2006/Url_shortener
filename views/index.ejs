@@ -28,7 +28,10 @@
         </div>
         <button type="submit">Shorten</button>
       </form>
-
+      <% if(errors && errors.length>0){ %>
+        <% errors.forEach((error) => {%>
+        <p class="flash-error"> <%= error %></p>
+        <%  })}%> 
       <h2>Shortened URLs</h2>
       <ul>
         <!-- {{ shortened_urls }} -->
@@ -41,17 +44,69 @@
         </li>
         `; }) .join("") -->
 
-        <% links.map(({id,shortCode, url}) => { %> 
+        <% links.map(({id,shortCode, url,userId}) => { %> 
         <% const  truncatedUrl = url.length >= 30 ? `${url.slice(0,30)}...` : url %>
 
         <li>
-          <a href="/<%= shortCode %>" target="_blank">
-            <%= host %>/<%= shortCode %>
-          </a>
-          - <%= truncatedUrl %>
+          <div class="url-content">
+            <a href="/<%= shortCode %>" target="_blank">
+              <%= host %>/<%= shortCode %>
+            </a>
+            - <%= truncatedUrl %>
+          </div>
+          <div class="url-actions">
+            <button class="action-btn copy-btn" data-clipboard="<%= host %>/<%= shortCode %>">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none">
+                <path d="M8 4v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7.242a2 2 0 0 0-.602-1.43L16.083 2.57A2 2 0 0 0 14.685 2H10a2 2 0 0 0-2 2z"></path>
+                <path d="M16 18v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2"></path>
+              </svg>
+            </button>
+            <a href="/edit/<%= userId %>/<%= id %>" class="action-btn edit-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none">
+                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+            </a>
+            <form action="/delete/<%= id %>" method="post" class="delete-form">
+              <button type="submit" class="action-btn delete-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </form>
+          </div>
         </li>
         <% })%>
       </ul>
     </div>
+
+    <script>
+      // Copy button functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        copyButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const textToCopy = this.dataset.clipboard;
+            navigator.clipboard.writeText(textToCopy)
+              .then(() => {
+                // Visual feedback - add copied class temporarily
+                this.classList.add('copied');
+                
+                // Remove the class after 2 seconds
+                setTimeout(() => {
+                  this.classList.remove('copied');
+                }, 2000);
+              })
+              .catch(err => {
+                console.error('Could not copy text: ', err);
+              });
+          });
+        });
+      });
+    </script>
   </body>
 </html>

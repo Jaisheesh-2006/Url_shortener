@@ -5,6 +5,7 @@ import {
   insertUser,
   verifyPassword,
 } from "../services/shortener.services.js";
+import { registerSchema } from "../validators/auth-validate.js";
 
 export const getLoginPage = (req, res) => {
   return res.render("auth/login",{errors:req.flash("errors")});
@@ -43,6 +44,15 @@ export const postLoginPage = async (req, res) => {
 export const postRegisterPage = async (req, res) => {
   console.log(req.body);
   const { name, email, password } = req.body;
+
+  const {data,error}=registerSchema.safeParse(req.body)
+  
+  // console.log("Data:",data)
+  if(error){
+    req.flash('errors',error.errors[0].message)
+    res.redirect("/user/register")
+  }
+
   const [userExists] = await getUserbyEmail(email);
   // console.log(userExists)
   // if (userExists) return res.redirect("/user/register");
@@ -52,7 +62,7 @@ export const postRegisterPage = async (req, res) => {
     return res.redirect("/user/register")
   }
   const hashedPassword = await hashPassword(password);
-  console.log(hashedPassword);
+  // console.log(hashedPassword);
   const user = await insertUser({ name, email, hashedPassword });
   console.log(user);
   res.redirect("/user/login");

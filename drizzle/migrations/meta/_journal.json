@@ -8,6 +8,20 @@
       "when": 1747051503850,
       "tag": "0000_giant_carnage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1747306861211,
+      "tag": "0001_foamy_gertrude_yorkes",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1747323378359,
+      "tag": "0002_certain_klaw",
+      "breakpoints": true
     }
   ]
 }
